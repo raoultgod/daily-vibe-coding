@@ -1,0 +1,12 @@
+# Personal media and generated work
+work/
+outputs/
+*.mp4
+*.mov
+*.mkv
+*.mp3
+*.wav
+.env
+.venv/
+__pycache__/
+*.pyc
