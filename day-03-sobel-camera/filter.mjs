@@ -1,8 +1,8 @@
 // CPU reference and fallback. Clamp sampling at the image boundary.
-export function sobelRGBA(data, width, height, intensity = 1) {
+export function sobelRGBA(data, width, height, intensity = 1, gain = 1) {
   const out = new Uint8ClampedArray(data.length);
   const gray = new Float32Array(width * height);
-  for (let p=0; p<gray.length; p++) gray[p] = .299*data[p*4]+.587*data[p*4+1]+.114*data[p*4+2];
+  for (let p=0; p<gray.length; p++) gray[p] = Math.min(255,(.299*data[p*4]+.587*data[p*4+1]+.114*data[p*4+2])*gain);
   const at=(x,y)=>gray[Math.max(0,Math.min(height-1,y))*width+Math.max(0,Math.min(width-1,x))];
   for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
     const a=at(x-1,y-1), b=at(x,y-1), c=at(x+1,y-1), d=at(x-1,y), f=at(x+1,y), g=at(x-1,y+1), h=at(x,y+1), i=at(x+1,y+1);

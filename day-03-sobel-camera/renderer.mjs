@@ -2,9 +2,9 @@ import { sobelRGBA } from './filter.mjs';
 
 const vertex = `attribute vec2 position; varying vec2 uv; void main(){uv=(position+1.0)*.5; gl_Position=vec4(position,0,1);}`;
 const fragment = `precision mediump float;
-uniform sampler2D image; uniform vec2 pixel; uniform float strength; uniform int mode; uniform bool mirror;
+uniform sampler2D image; uniform vec2 pixel; uniform float strength; uniform float gain; uniform int mode; uniform bool mirror;
 varying vec2 uv;
-float gray(vec2 p){return dot(texture2D(image,p).rgb,vec3(.299,.587,.114));}
+float gray(vec2 p){return min(1.0,dot(texture2D(image,p).rgb,vec3(.299,.587,.114))*gain);}
 void main(){
  vec2 p=vec2(mirror ? 1.0-uv.x : uv.x,uv.y);
  vec4 original=texture2D(image,p);
@@ -35,13 +35,13 @@ export function createRenderer(canvas, forceCPU = false) {
     for(const p of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T]) gl.texParameteri(gl.TEXTURE_2D,p,gl.CLAMP_TO_EDGE);
     for(const p of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D,p,gl.NEAREST);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
-    uniforms=Object.fromEntries(['image','pixel','strength','mode','mirror'].map(n=>[n,gl.getUniformLocation(program,n)]));
+    uniforms=Object.fromEntries(['image','pixel','strength','mode','mirror','gain'].map(n=>[n,gl.getUniformLocation(program,n)]));
     gl.uniform1i(uniforms.image,0);gpuOK=true;
   } catch(error) { console.warn('WebGL 초기화 실패. CPU 모드로 전환합니다.',error); }
   gpu.addEventListener('webglcontextlost',event=>{event.preventDefault();gpuOK=false;});
   return {
     get engine(){return gpuOK ? 'WEBGL · GPU' : 'CPU · 절전 해상도';},
-    render(source,{mode='sobel',intensity=1,mirror=false}={}) {
+    render(source,{mode='sobel',intensity=1,mirror=false,gain=1}={}) {
       const sw=source.videoWidth||source.width, sh=source.videoHeight||source.height;
       if(!sw||!sh)return false;
       const scale=Math.min(1,(gpuOK?1280:480)/sw,(gpuOK?720:360)/sh);
@@ -51,7 +51,7 @@ export function createRenderer(canvas, forceCPU = false) {
         if(gpu.width!==width||gpu.height!==height){gpu.width=width;gpu.height=height;}
         gl.viewport(0,0,width,height);gl.useProgram(program);
         gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,source);
-        gl.uniform2f(uniforms.pixel,1/sw,1/sh);gl.uniform1f(uniforms.strength,intensity);
+        gl.uniform2f(uniforms.pixel,1/sw,1/sh);gl.uniform1f(uniforms.strength,intensity);gl.uniform1f(uniforms.gain,gain);
         gl.uniform1i(uniforms.mode,{original:0,sobel:1,split:2}[mode]);gl.uniform1i(uniforms.mirror,mirror?1:0);
         gl.drawArrays(gl.TRIANGLES,0,6);ctx.drawImage(gpu,0,0);return true;
       }
@@ -60,7 +60,7 @@ export function createRenderer(canvas, forceCPU = false) {
       scratchCtx.setTransform(mirror?-1:1,0,0,1,mirror?width:0,0);scratchCtx.drawImage(source,0,0,width,height);scratchCtx.resetTransform();
       const original=scratchCtx.getImageData(0,0,width,height);
       if(mode==='original'){ctx.putImageData(original,0,0);return true;}
-      const edges=sobelRGBA(original.data,width,height,intensity);
+      const edges=sobelRGBA(original.data,width,height,intensity,gain);
       if(mode==='split') for(let y=0;y<height;y++) for(let x=0;x<width/2;x++){const p=(y*width+x)*4;edges.set(original.data.subarray(p,p+4),p);}
       ctx.putImageData(new ImageData(edges,width,height),0,0);return true;
     }
