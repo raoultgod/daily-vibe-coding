@@ -1,0 +1,29 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+test('moods resolve to a published three-color palette', () => {
+  const { palettes, recommend } = require('../palette.js');
+  assert.ok(palettes.length >= 2);
+  for (const palette of palettes) {
+    const result = recommend(palette.id);
+    assert.ok(result.source && /^https:\/\//.test(result.source.url), 'published palette source required');
+    assert.equal(result.colors.length, 3);
+    assert.equal(result.colors.filter(color => color.role === 'main').length, 2);
+    assert.equal(result.colors.filter(color => color.role === 'accent').length, 1);
+    assert.match(result.photo.url, /^https:\/\/www\.pexels\.com\/photo\//);
+    assert.equal(result.photo.license, 'https://www.pexels.com/license/');
+    assert.ok(result.photo.photographer && result.photo.alt && result.photo.description);
+    assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '..', result.photo.src)));
+  }
+});
+test('unknown mood does not invent a recommendation', () => {
+  assert.equal(require('../palette.js').recommend('missing'), null);
+});
+test('page offers accessible mood controls and a real outfit photo', () => {
+  const fs = require('node:fs');
+  const html = fs.readFileSync(require('node:path').join(__dirname, '../index.html'), 'utf8');
+  assert.match(html, /lang="ko"/);
+  assert.match(html, /id="moods"/);
+  assert.match(html, /aria-live="polite"/);
+  assert.match(html, /id="outfit-photo"/);
+  assert.match(html, /id="license-link"/);
+});
