@@ -2,7 +2,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 test('moods resolve to a published three-color palette', () => {
   const { palettes, recommend } = require('../palette.js');
-  assert.ok(palettes.length >= 4);
+  assert.equal(palettes.length, 20);
+  assert.equal(new Set(palettes.map(p => p.colors.map(c => c.name).sort().join('|'))).size, 20);
   assert.equal(new Set(palettes.map(p => p.id)).size, palettes.length);
   for (const palette of palettes) {
     const result = recommend(palette.id);
@@ -10,10 +11,12 @@ test('moods resolve to a published three-color palette', () => {
     assert.equal(result.colors.length, 3);
     assert.equal(result.colors.filter(color => color.role === 'main').length, 2);
     assert.equal(result.colors.filter(color => color.role === 'accent').length, 1);
-    assert.match(result.photo.url, /^https:\/\/www\.pexels\.com\/photo\//);
-    assert.equal(result.photo.license, 'https://www.pexels.com/license/');
-    assert.ok(result.photo.photographer && result.photo.alt && result.photo.description);
-    assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '..', result.photo.src)));
+    if (result.photo) {
+      assert.match(result.photo.url, /^https:\/\/www\.pexels\.com\/photo\//);
+      assert.equal(result.photo.license, 'https://www.pexels.com/license/');
+      assert.ok(result.photo.photographer && result.photo.alt && result.photo.description);
+      assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '..', result.photo.src)));
+    }
   }
 });
 test('refresh chooses a different existing palette from the current one', () => {
@@ -34,6 +37,7 @@ test('page has no mood controls and offers a real outfit photo', () => {
   assert.doesNotMatch(html, /data-mood|id="moods"/);
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /id="outfit-photo"/);
+  assert.match(html, /id="photo-unavailable"/);
   assert.match(html, /id="main-swatches"/);
   assert.match(html, /id="accent-swatches"/);
   assert.ok(html.indexOf('id="main-swatches"') < html.indexOf('id="accent-swatches"'));
