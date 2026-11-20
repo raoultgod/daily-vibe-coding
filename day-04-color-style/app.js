@@ -1,9 +1,7 @@
-const moodButtons = [...document.querySelectorAll('[data-mood]')];
 function render(id) {
   const palette = recommend(id);
   if (!palette) return;
   try { sessionStorage.setItem('lastPalette', id); } catch (_) { /* Storage may be blocked. */ }
-  moodButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mood === id)));
   document.getElementById('result-title').textContent = palette.title;
   document.getElementById('result-description').textContent = palette.description;
   document.getElementById('result-english').textContent = palette.english;
@@ -29,7 +27,6 @@ function render(id) {
     }));
   }
 }
-moodButtons.forEach(button => button.addEventListener('click', () => render(button.dataset.mood)));
 let previous = null;
 try { previous = sessionStorage.getItem('lastPalette'); } catch (_) { /* Random choice still works. */ }
 const initial = chooseNext(previous);

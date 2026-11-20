@@ -2,7 +2,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 test('moods resolve to a published three-color palette', () => {
   const { palettes, recommend } = require('../palette.js');
-  assert.ok(palettes.length >= 2);
+  assert.ok(palettes.length >= 4);
+  assert.equal(new Set(palettes.map(p => p.id)).size, palettes.length);
   for (const palette of palettes) {
     const result = recommend(palette.id);
     assert.ok(result.source && /^https:\/\//.test(result.source.url), 'published palette source required');
@@ -26,11 +27,11 @@ test('refresh chooses a different existing palette from the current one', () => 
 test('unknown mood does not invent a recommendation', () => {
   assert.equal(require('../palette.js').recommend('missing'), null);
 });
-test('page offers accessible mood controls and a real outfit photo', () => {
+test('page has no mood controls and offers a real outfit photo', () => {
   const fs = require('node:fs');
   const html = fs.readFileSync(require('node:path').join(__dirname, '../index.html'), 'utf8');
   assert.match(html, /lang="ko"/);
-  assert.match(html, /id="moods"/);
+  assert.doesNotMatch(html, /data-mood|id="moods"/);
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /id="outfit-photo"/);
   assert.match(html, /id="main-swatches"/);
