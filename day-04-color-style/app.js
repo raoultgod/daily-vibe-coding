@@ -18,15 +18,15 @@ function render(id) {
   source.textContent = `Photo: ${palette.photo.photographer} / Pexels ↗`;
   source.href = palette.photo.url;
   document.getElementById('license-link').href = palette.photo.license;
-  const swatches = document.getElementById('swatches');
-  swatches.replaceChildren(...palette.colors.map(color => {
-    const item = document.createElement('div'); item.className = 'swatch';
-    const block = document.createElement('div'); block.className = 'swatch-color'; block.style.backgroundColor = color.hex;
-    const label = document.createElement('div'); label.className = 'swatch-label';
-    const name = document.createElement('strong'); name.textContent = color.name;
-    const role = document.createElement('span'); role.textContent = color.role === 'main' ? 'MAIN COLOR' : 'ACCENT COLOR';
-    label.append(name, role); item.append(block, label); return item;
-  }));
+  for (const role of ['main', 'accent']) {
+    const container = document.getElementById(`${role}-swatches`);
+    container.replaceChildren(...palette.colors.filter(color => color.role === role).map(color => {
+      const item = document.createElement('div'); item.className = 'swatch';
+      const block = document.createElement('div'); block.className = 'swatch-color'; block.style.backgroundColor = color.hex;
+      const name = document.createElement('span'); name.className = 'swatch-name'; name.textContent = color.name;
+      item.append(block, name); return item;
+    }));
+  }
 }
 moodButtons.forEach(button => button.addEventListener('click', () => render(button.dataset.mood)));
 render('classic');

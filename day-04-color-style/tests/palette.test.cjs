@@ -25,5 +25,9 @@ test('page offers accessible mood controls and a real outfit photo', () => {
   assert.match(html, /id="moods"/);
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /id="outfit-photo"/);
+  assert.match(html, /id="main-swatches"/);
+  assert.match(html, /id="accent-swatches"/);
+  assert.ok(html.indexOf('id="main-swatches"') < html.indexOf('id="accent-swatches"'));
+  assert.ok(html.indexOf('id="accent-swatches"') < html.indexOf('id="outfit-photo"'));
   assert.match(html, /id="license-link"/);
 });
