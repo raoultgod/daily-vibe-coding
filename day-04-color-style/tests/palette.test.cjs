@@ -15,6 +15,14 @@ test('moods resolve to a published three-color palette', () => {
     assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '..', result.photo.src)));
   }
 });
+test('refresh chooses a different existing palette from the current one', () => {
+  const { palettes, chooseNext } = require('../palette.js');
+  for (const current of palettes) {
+    assert.notEqual(chooseNext(current.id, () => 0).id, current.id);
+    assert.notEqual(chooseNext(current.id, () => 0.999).id, current.id);
+  }
+  assert.equal(chooseNext(null, () => 0).id, palettes[0].id);
+});
 test('unknown mood does not invent a recommendation', () => {
   assert.equal(require('../palette.js').recommend('missing'), null);
 });

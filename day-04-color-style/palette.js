@@ -17,4 +17,9 @@ const palettes = [
   }
 ];
 function recommend(id) { return palettes.find(palette => palette.id === id) || null; }
-if (typeof module !== 'undefined') module.exports = { palettes, recommend };
+function chooseNext(previousId, random = Math.random) {
+  const different = palettes.filter(palette => palette.id !== previousId);
+  const choices = different.length ? different : palettes;
+  return choices[Math.floor(random() * choices.length)] || null;
+}
+if (typeof module !== 'undefined') module.exports = { palettes, recommend, chooseNext };
