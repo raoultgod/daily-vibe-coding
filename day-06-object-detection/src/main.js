@@ -41,10 +41,9 @@ function drawBoxes(boxes) {
     ctx.strokeRect(mapped.x, mapped.y, mapped.width, mapped.height);
     const labelWidth = ctx.measureText(mapped.label).width + 12;
     const labelHeight = Math.max(23, width / 25);
-    const labelY = Math.max(0, mapped.y - labelHeight);
-    ctx.fillRect(mapped.x, labelY, labelWidth, labelHeight);
+    ctx.fillRect(mapped.labelX, mapped.labelY, labelWidth, labelHeight);
     ctx.fillStyle = '#10140c';
-    ctx.fillText(mapped.label, mapped.x + 6, labelY + (labelHeight - parseFloat(ctx.font)) / 2);
+    ctx.fillText(mapped.label, mapped.labelX + 6, mapped.labelY + (labelHeight - parseFloat(ctx.font)) / 2);
   }
 }
 

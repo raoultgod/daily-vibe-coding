@@ -17,6 +17,8 @@ export function mapBoxToCanvas(box, sourceWidth, sourceHeight, canvasWidth, canv
   return {
     x: left * scaleX,
     y: top * scaleY,
+    labelX: left * scaleX,
+    labelY: top * scaleY,
     width: (right - left) * scaleX,
     height: (bottom - top) * scaleY,
     label: `${box.name} ${Math.round(box.conf * 100)}%`,
