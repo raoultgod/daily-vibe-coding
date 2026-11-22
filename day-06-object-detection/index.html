@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0d0c">
+  <meta name="description" content="카메라 화면에서 물체를 실시간으로 찾아 네모 상자로 표시합니다. 영상은 기기 밖으로 전송되지 않습니다.">
+  <title>FRAME / OBJECT DETECTOR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Frame 홈"><span class="brand-mark">F</span><span>FRAME<span class="brand-dot">.</span></span></a>
+    <div class="top-meta"><span class="live-dot"></span><span>ON-DEVICE VISION</span><span class="version">YOLO / COCO</span></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div class="eyebrow"><span>DAY 06</span><i></i><span>REAL-TIME OBJECT DETECTION</span></div>
+      <h1>세상을 <em>읽어내는</em><br class="mobile-break"> 카메라.</h1>
+      <p>카메라를 켜면 화면 속 물체를 찾아 실시간으로 표시합니다.<br class="desktop-break"> 영상은 브라우저 안에서만 처리됩니다.</p>
+    </section>
+
+    <section class="workspace" aria-label="실시간 물체 인식">
+      <div class="view-card">
+        <div class="view-topline"><span class="view-label"><span class="rec-dot"></span> LIVE VIEW</span><span id="fps" class="fps">-- FPS</span></div>
+        <div id="stage" class="stage">
+          <video id="video" autoplay muted playsinline aria-label="카메라 영상"></video>
+          <canvas id="overlay" aria-hidden="true"></canvas>
+          <div id="empty" class="empty-state">
+            <div class="camera-icon" aria-hidden="true"><span></span></div>
+            <strong>렌즈를 열어 시작하세요</strong>
+            <span>카메라 화면이 이곳에 표시됩니다</span>
+          </div>
+          <div id="loading" class="loading-state" hidden><span class="spinner"></span><span id="loadingText">모델 준비 중…</span></div>
+          <div class="stage-corner corner-tl"></div><div class="stage-corner corner-tr"></div>
+          <div class="stage-corner corner-bl"></div><div class="stage-corner corner-br"></div>
+        </div>
+        <div class="view-footer"><span id="status" role="status" aria-live="polite">카메라가 꺼져 있습니다</span><span id="device">YOLO26n · COCO 80</span></div>
+      </div>
+
+      <aside class="controls">
+        <div class="panel-heading"><div><span class="section-index">01 / INPUT</span><h2>카메라</h2></div><span class="control-icon">⌁</span></div>
+        <p class="panel-copy">기기의 카메라를 연결해 주변 물체를 인식합니다.</p>
+        <button id="toggleCamera" class="primary-button" type="button"><span class="button-icon">▶</span><span id="buttonLabel">카메라 시작</span></button>
+
+        <div class="divider"></div>
+        <div class="panel-heading settings-heading"><div><span class="section-index">02 / SETTINGS</span><h2>감지 민감도</h2></div><output id="thresholdValue" for="threshold">35%</output></div>
+        <p class="panel-copy">값이 높을수록 확신이 큰 물체만 표시합니다.</p>
+        <input id="threshold" type="range" min="15" max="85" value="35" aria-label="감지 민감도">
+        <div class="range-labels"><span>더 많이 감지</span><span>더 엄격하게</span></div>
+
+        <div class="divider"></div>
+        <div class="panel-heading result-heading"><div><span class="section-index">03 / DETECTED</span><h2>찾은 물체</h2></div><span id="count" class="count-badge">0</span></div>
+        <ul id="detections" class="detection-list" aria-live="polite"><li class="no-detections">아직 감지된 물체가 없습니다</li></ul>
+        <div class="privacy-note"><span class="lock-icon">◈</span><span>영상은 기기에서만 처리되며 저장·전송되지 않습니다.</span></div>
+      </aside>
+    </section>
+  </main>
+  <footer><span>FRAME / OBJECT DETECTOR</span><span>POWERED BY YOLO · RUNS IN YOUR BROWSER</span></footer>
+</body>
+</html>
