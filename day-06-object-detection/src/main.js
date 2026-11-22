@@ -37,13 +37,13 @@ function drawBoxes(boxes) {
   for (const box of boxes) {
     const mapped = mapBoxToCanvas(box, video.videoWidth, video.videoHeight, width, height);
     if (!mapped || mapped.width <= 1 || mapped.height <= 1) continue;
-    ctx.strokeStyle = '#c8f169';
-    ctx.fillStyle = '#c8f169';
+    ctx.strokeStyle = '#d75f40';
+    ctx.fillStyle = '#d75f40';
     ctx.strokeRect(mapped.x, mapped.y, mapped.width, mapped.height);
     const labelWidth = ctx.measureText(mapped.label).width + 12;
     const labelHeight = Math.max(23, width / 25);
     ctx.fillRect(mapped.labelX, mapped.labelY, labelWidth, labelHeight);
-    ctx.fillStyle = '#10140c';
+    ctx.fillStyle = '#fffaf3';
     const textOrigin = labelTextOrigin(mapped.labelX, mapped.labelY, labelHeight, fontSize);
     ctx.fillText(mapped.label, textOrigin.x, textOrigin.y);
   }
