@@ -15,11 +15,6 @@
     <span id="device" class="model-name">YOLO26n · COCO 80</span>
   </header>
   <main>
-    <section class="page-heading">
-      <div><p class="eyebrow">카메라 도구</p><h1>화면 속 물체</h1></div>
-      <p class="description">카메라를 켜면 인식한 물체를 화면에 표시합니다.<br>영상은 이 브라우저 안에서만 처리됩니다.</p>
-    </section>
-
     <section class="workspace" aria-label="실시간 물체 인식">
       <div class="view-card">
         <div class="view-topline"><span>카메라 미리보기</span><span id="fps" class="fps">-- FPS</span></div>
@@ -27,24 +22,21 @@
           <video id="video" autoplay muted playsinline aria-label="카메라 영상"></video>
           <canvas id="overlay" aria-hidden="true"></canvas>
           <div id="empty" class="empty-state">
-            <strong>카메라가 꺼져 있습니다</strong>
-            <span>아래 버튼을 눌러 시작하세요</span>
+            <strong>카메라를 시작하세요</strong>
           </div>
           <div id="loading" class="loading-state" hidden><span class="spinner"></span><span id="loadingText">모델 준비 중…</span></div>
         </div>
-        <div class="view-footer"><span id="status" role="status" aria-live="polite">카메라가 꺼져 있습니다</span><span>영상은 저장되지 않습니다</span></div>
+        <div class="view-footer"><span id="status" role="status" aria-live="polite">카메라가 꺼져 있습니다</span></div>
       </div>
 
       <aside class="controls" aria-label="카메라와 감지 설정">
         <section class="control-section">
           <h2>카메라</h2>
-          <p class="panel-copy">기기의 카메라를 연결합니다.</p>
           <button id="toggleCamera" class="primary-button" type="button"><span class="button-icon">▶</span><span id="buttonLabel">카메라 시작</span></button>
         </section>
 
         <section class="control-section">
           <div class="section-heading"><h2>감지 기준</h2><output id="thresholdValue" for="threshold">35%</output></div>
-          <p class="panel-copy">낮추면 더 많이 표시하고, 높이면 확신이 큰 결과만 남깁니다.</p>
           <input id="threshold" type="range" min="15" max="85" value="35" aria-label="감지 기준">
           <div class="range-labels"><span>더 많이</span><span>더 엄격하게</span></div>
         </section>
@@ -56,6 +48,6 @@
       </aside>
     </section>
   </main>
-  <footer><span>처리는 기기 안에서 이뤄집니다.</span><span>모델: YOLO26n</span></footer>
+  <footer><span>영상 처리는 기기 안에서 이뤄집니다.</span></footer>
 </body>
 </html>

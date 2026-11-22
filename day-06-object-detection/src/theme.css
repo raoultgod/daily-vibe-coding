@@ -29,16 +29,6 @@ button, input { font: inherit; }
 .brand { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 650; }
 .model-name { color: var(--muted); font-size: 12px; }
 main { max-width: 1280px; margin: 0 auto; padding: 30px 24px 56px; }
-.page-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
-  margin: 0 0 20px;
-}
-.eyebrow { margin: 0 0 7px; color: var(--muted); font-size: 12px; }
-h1 { margin: 0; font-size: clamp(25px, 3vw, 34px); line-height: 1.2; font-weight: 650; letter-spacing: -.04em; }
-.description { margin: 0 0 2px; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, .75fr); gap: 16px; align-items: start; }
 .view-card, .controls { overflow: hidden; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); }
 .view-topline, .view-footer { min-height: 42px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; color: var(--muted); font-size: 11px; }
@@ -58,7 +48,6 @@ h1 { margin: 0; font-size: clamp(25px, 3vw, 34px); line-height: 1.2; font-weight
 .controls { padding: 20px; }
 .control-section + .control-section { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
 h2 { margin: 0; font-size: 15px; line-height: 1.35; font-weight: 600; }
-.panel-copy { margin: 7px 0 13px; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .primary-button { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--ink); border-radius: 5px; background: var(--ink); color: #fff; font-size: 13px; font-weight: 550; cursor: pointer; }
 .primary-button:hover { background: #3b3e37; }
 .primary-button:focus-visible, input:focus-visible { outline: 3px solid #d75f4070; outline-offset: 2px; }
@@ -88,9 +77,6 @@ footer { max-width: 1280px; display: flex; justify-content: space-between; gap: 
 @media (max-width: 560px) {
   .topbar { height: 56px; padding: 0 17px; }
   main { padding: 22px 16px 34px; }
-  .page-heading { display: block; margin-bottom: 15px; }
-  h1 { font-size: 27px; }
-  .description { margin-top: 9px; font-size: 12px; }
   .workspace { gap: 11px; }
   .stage { aspect-ratio: 4 / 3; }
   .view-topline { min-height: 38px; }
