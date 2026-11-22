@@ -1,6 +1,6 @@
 import { YOLO } from '@ultralytics/yolo';
 import wasmUrl from '@ultralytics/yolo/pkg/ultralytics_inference_web_bg.wasm?url';
-import { filterDetections, mapBoxToCanvas } from './detections.mjs';
+import { filterDetections, mapBoxToCanvas, labelTextOrigin } from './detections.mjs';
 
 const $ = (id) => document.getElementById(id);
 const video = $('video');
@@ -31,7 +31,8 @@ function drawBoxes(boxes) {
   const height = canvas.height;
   ctx.clearRect(0, 0, width, height);
   ctx.lineWidth = Math.max(2, width / 480);
-  ctx.font = `600 ${Math.max(12, width / 42)}px "Space Grotesk", sans-serif`;
+  const fontSize = Math.max(12, width / 42);
+  ctx.font = `600 ${fontSize}px "Space Grotesk", sans-serif`;
   ctx.textBaseline = 'top';
   for (const box of boxes) {
     const mapped = mapBoxToCanvas(box, video.videoWidth, video.videoHeight, width, height);
@@ -43,7 +44,8 @@ function drawBoxes(boxes) {
     const labelHeight = Math.max(23, width / 25);
     ctx.fillRect(mapped.labelX, mapped.labelY, labelWidth, labelHeight);
     ctx.fillStyle = '#10140c';
-    ctx.fillText(mapped.label, mapped.labelX + 6, mapped.labelY + (labelHeight - parseFloat(ctx.font)) / 2);
+    const textOrigin = labelTextOrigin(mapped.labelX, mapped.labelY, labelHeight, fontSize);
+    ctx.fillText(mapped.label, textOrigin.x, textOrigin.y);
   }
 }
 

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { filterDetections, mapBoxToCanvas } from '../src/detections.mjs';
+import { filterDetections, mapBoxToCanvas, labelTextOrigin } from '../src/detections.mjs';
 
 test('filters detections below the confidence threshold and sorts strongest first', () => {
   const boxes = [
@@ -24,6 +24,10 @@ test('anchors the confidence label to the detection box upper-left corner', () =
     100, 100, 200, 150,
   );
   assert.deepEqual({ x: mapped.labelX, y: mapped.labelY }, { x: 20, y: 30 });
+});
+
+test('positions label text using the font size, not the font weight', () => {
+  assert.deepEqual(labelTextOrigin(20, 30, 32, 19, 6), { x: 26, y: 36.5 });
 });
 
 test('clamps boxes to the visible canvas and rejects invalid source dimensions', () => {

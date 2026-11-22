@@ -4,6 +4,13 @@ export function filterDetections(boxes, threshold) {
     .sort((a, b) => b.conf - a.conf);
 }
 
+export function labelTextOrigin(anchorX, anchorY, labelHeight, fontSize, padding = 6) {
+  return {
+    x: anchorX + padding,
+    y: anchorY + (labelHeight - fontSize) / 2,
+  };
+}
+
 export function mapBoxToCanvas(box, sourceWidth, sourceHeight, canvasWidth, canvasHeight) {
   if (![sourceWidth, sourceHeight, canvasWidth, canvasHeight].every((value) => Number.isFinite(value) && value > 0)) {
     return null;
