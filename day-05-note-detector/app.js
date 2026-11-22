@@ -69,8 +69,8 @@
       },
       makeContext: () => new (window.AudioContext || window.webkitAudioContext)(),
       detectPitch: Pitch.detectPitch,
-      requestFrame: requestAnimationFrame,
-      cancelFrame: cancelAnimationFrame,
+      requestFrame: window.requestAnimationFrame.bind(window),
+      cancelFrame: window.cancelAnimationFrame.bind(window),
       onState: state => {
         running = state.status === 'pending' || state.status === 'listening';
         button.textContent = running ? '중지' : '마이크 시작';
