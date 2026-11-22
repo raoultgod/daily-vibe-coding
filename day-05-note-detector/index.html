@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f3">
+  <title>음 높이 측정</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="pitch.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><h1>음 높이 측정</h1><p>한 번에 한 음씩 들려주세요.</p></header>
+    <section class="monitor" aria-label="측정 결과">
+      <div class="monitor-head"><span>현재 음</span><span id="status" role="status">마이크가 꺼져 있습니다</span></div>
+      <div id="note" class="note" aria-label="음 이름">—</div>
+      <div class="readings"><div><span>주파수</span><strong id="frequency">— Hz</strong></div><div><span>기준음과 차이</span><strong id="tuning">— cent</strong></div></div>
+    </section>
+    <button id="toggle" type="button" aria-pressed="false">마이크 시작</button>
+    <p class="privacy">소리는 이 기기에서만 분석하며 녹음하거나 전송하지 않습니다.</p>
+  </main>
+</body>
+</html>
